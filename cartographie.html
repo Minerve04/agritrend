@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang='fr'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Cartographie des structures de soutien à l'innovation agricole en France — AgriTrend</title><meta name='description' content="100 structures qui accompagnent, financent, expérimentent et diffusent l'innovation agricole en France, classées en 7 secteurs et 21 domaines. La carte interactive AgriTrend."><link rel='canonical' href='https://agritrend.fr/cartographie.html'><meta name='theme-color' content='#16412d'><link rel='icon' type='image/svg+xml' href='/favicon.svg'><meta property='og:title' content="Cartographie des structures de soutien à l'innovation agricole en France — AgriTrend"><meta property='og:description' content="100 structures qui accompagnent, financent, expérimentent et diffusent l'innovation agricole en France, classées en 7 secteurs et 21 domaines. La carte interactive AgriTrend."><meta property='og:type' content='website'><meta property='og:url' content='https://agritrend.fr/cartographie.html'><meta property='og:image' content='https://agritrend.fr/article/img/cartographie-innovation-agricole.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500&display=swap'><style>*{margin:0;padding:0;box-sizing:border-box}a{color:inherit;text-decoration:none}.wrap{max-width:1080px;margin:0 auto;padding:0 24px}.topbar{background:#16412d;color:#eef2ec}.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:34px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.topbar a{color:#cfe0d3}header.mast{border-bottom:2px solid #16412d;text-align:center;padding:22px 24px 14px;background:#faf9f4}.logo{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:2.1rem;letter-spacing:-.02em;color:#16412d}.logo .tld{color:#bd8524}nav.rub{display:flex;justify-content:center;flex-wrap:wrap;gap:2px 24px;margin-top:14px;border-top:1px solid #e4e2d6;padding-top:12px}nav.rub a{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:6px 2px}nav.rub a:hover,nav.rub a.on{color:#2e7d4f}footer.sf{margin-top:12px;border-top:2px solid #16412d;text-align:center;padding:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#5d6a5f}footer.sf a{color:#5d6a5f;margin:0 8px}.notes a{text-decoration:underline}
+
+/* Layout: bandeau titre + chiffres, puis roue (gauche) et panneau secteurs/fiche (droite), empilés sur mobile */
+:root{
+  --bg:#faf9f4; --surface:#ffffff; --fg:#17251c; --muted:#5b6b60; --line:#e4e2d6;
+  --band:#16412d; --band-fg:#eef5ee; --accent:#d9a521; --ring:#e7ede5;
+  --display:"Fraunces", Georgia, serif;
+  --body:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.5}
+.cwrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section.hero{background:var(--band);color:var(--band-fg);padding-top:28px;padding-bottom:24px;border-bottom:3px solid var(--accent)}
+.hero .cwrap{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,32px);line-height:1.15;margin:0 0 6px;text-wrap:balance;max-width:640px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{font-weight:600;margin:0 0 6px;opacity:.95}
+.hero p.lead{margin:0;max-width:620px;opacity:.8;font-size:13px}
+.draft{display:inline-block;margin-top:10px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--accent);color:var(--accent);padding:2px 8px;border-radius:3px}
+.stats{display:flex;gap:28px;flex-wrap:wrap}
+.stat b{display:block;font-family:var(--display);font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+main.cwrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;padding-block:20px}
+@media (max-width:900px){main.cwrap{grid-template-columns:1fr}}
+.ccard{background:var(--surface);border:1px solid var(--line);border-radius:8px;min-width:0}
+.mapcard{padding:14px}
+.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+#q{flex:1;min-width:0;font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+#q:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:12px;color:var(--muted)}
+svg#wheel{width:100%;height:auto;display:block;max-width:100%}
+svg text{font-family:var(--body)}
+.chip{cursor:pointer}
+.chip rect{stroke:var(--surface);stroke-width:2;transition:opacity .15s}
+.chip text{fill:#fff;font-size:10.5px;font-weight:600;pointer-events:none}
+.chip:hover rect,.chip.sel rect{stroke:var(--fg);stroke-width:3}
+.chip.dim{opacity:.15}
+.chip:focus{outline:none}.chip:focus-visible rect{stroke:var(--accent);stroke-width:4}
+.side{display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{padding:14px 16px}
+.panel h2{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
+.sectors{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px 14px}
+.sec{border:0;background:none;color:var(--fg);font:inherit;text-align:left;padding:6px 0;cursor:pointer;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);width:100%}
+.sec i{width:10px;height:10px;border-radius:2px;flex:none}
+.sec span{flex:1;font-weight:500}
+.sec b{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
+.sec[aria-pressed="true"] span{text-decoration:underline;text-underline-offset:3px}
+.doms{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;padding:4px 0 6px}
+.dom{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--bg)}
+.fiche .empty{color:var(--muted);text-align:center;padding:36px 8px}
+.fiche h3{font-family:var(--display);font-size:22px;margin:0 0 4px;line-height:1.2}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.ftag{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:3px;color:#fff}
+.ftag.verify{background:none;color:var(--muted);border:1px dashed var(--muted)}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:12px}
+.meta div{background:var(--bg);border-radius:6px;padding:8px 10px}
+.meta small{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fiche p{margin:0 0 10px;max-width:65ch}
+.fiche h4{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+.fiche a{color:var(--fg);font-weight:600}
+.notes{padding-block:0 28px}
+.notes .ccard{padding:16px 18px}
+.notes h2{font-family:var(--display);font-size:18px;margin:0 0 8px}
+.notes ul{margin:0;padding-left:18px;max-width:80ch}
+.notes li{margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><div class='topbar'><div class='wrap'><a href='/'>← AgriTrend</a><span>Le décryptage agri &amp; agtech</span></div></div><header class='mast'><div class='logo'><a href='/'>Agri<span class='tld'>Trend</span></a></div><nav class='rub'><a href='/agtech.html'>AgTech</a> <a href='/agroequipement.html'>Agroéquipement</a> <a href='/souverainete.html'>Souveraineté</a> <a href='/filieres.html'>Filières</a> <a href='/transition.html'>Transition</a> <a href='/annuaire.html'>Annuaire</a> <a href='/ecosysteme.html'>Écosystème</a> <a href='/cartographie.html' class='on'>Cartographie</a> <a href='/barometre.html'>Baromètre</a></nav></header><section class="hero">
+  <div class="cwrap">
+    <div>
+      <h1>Cartographie des structures de soutien à <em>l'innovation agricole</em> en France</h1>
+      <p class="sub">Guide d'orientation pour développer et diffuser l'innovation au champ</p>
+      <p class="lead">Pensée comme une boussole, de l'idée à la diffusion sur les exploitations : qui accompagne, qui finance, qui expérimente, qui fait connaître. Cliquez sur une pastille pour ouvrir la fiche.</p>
+      <span class="draft">Version 1 · fiches en cours de vérification</span>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+</section>
+
+<main class="cwrap">
+  <section class="ccard mapcard" aria-label="Carte">
+    <div class="toolbar">
+      <label for="q" class="hint" style="position:absolute;left:-9999px">Rechercher une structure</label>
+      <input id="q" type="search" placeholder="Rechercher une structure…" autocomplete="off">
+    </div>
+    <svg id="wheel" viewBox="0 0 1000 1000" role="img" aria-label="Roue des acteurs de l'innovation agricole par secteur et domaine"></svg>
+    <div class="hint">Cartographie AgriTrend · première version du 27 novembre 2026</div>
+  </section>
+  <aside class="side">
+    <section class="ccard panel">
+      <h2>Répartition par secteur</h2>
+      <div class="sectors" id="sectors"></div>
+    </section>
+    <section class="ccard panel fiche" id="fiche" aria-live="polite">
+      <h2>Fiche sélectionnée</h2>
+      <div class="empty">Cliquez sur une pastille de la carte pour afficher la fiche de la structure.</div>
+    </section>
+  </aside>
+</main>
+
+<section class="cwrap notes">
+  <div class="ccard">
+    <h2>Méthode et hypothèses</h2>
+    <ul>
+      <li>Modèle repris : la cartographie dual-use de la Commission de l'Innovation Duale de l'INAS (secteurs, domaines, fiches). Ici, 7 secteurs et 21 domaines adaptés au monde agricole.</li>
+      <li>Périmètre : structures qui aident à faire naître, financer, tester ou diffuser une innovation agricole en France. Les startups elles-mêmes ne sont pas listées, comme dans le modèle.</li>
+      <li>Les fiches ont été rédigées par la rédaction à partir de sources publiques, sans contact préalable avec les structures : elles portent la mention « à vérifier » tant qu'elles n'ont pas été relues. Une erreur, une structure manquante ? Écrivez-nous sur <a href="https://www.linkedin.com/company/agritrend">LinkedIn</a>. Dates et sièges sont laissés vides quand ils ne sont pas certains.</li>
+      <li>Les logos sont repris de l'en-tête du site officiel de chaque structure. Quand aucun logo n'a pu être récupéré, la pastille porte un sigle.</li>
+      <li>Les syndicats agricoles figurent tous, sans hiérarchie, pour garder une ligne neutre.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class='sf'><a href='/'>Accueil</a> <a href='/ecosysteme.html'>Écosystème</a> <a href='/annuaire.html'>Annuaire</a> <a href='/newsletter.html'>Newsletter</a> <a href='https://www.linkedin.com/company/agritrend'>LinkedIn</a><div style='margin-top:10px'>© 2026 AgriTrend</div></footer><script>
+const SECTORS=[
+ {k:"acc",n:"Accompagnement",c:"#2f7d4f",doms:[
+  {n:"Incubateurs & accélérateurs",s:"Incubateurs",items:[
+   {n:"Le Village by CA",y:"2014",h:"Paris",p:"Réseau national",t:"Réseau d'incubateurs du Crédit Agricole, avec de nombreux sites en région et une forte présence agritech et agroalimentaire.",w:"levillagebyca.com"},
+   {n:"Hectar",y:"2021",h:"Lévis-Saint-Nom (78)",p:"National",t:"Campus agricole qui combine formation à l'installation, accélération de startups agritech et ferme de démonstration.",w:"hectar.co"},
+   {n:"Agrilab",a:"AL",h:"Beauvais (60)",p:"Hauts-de-France",t:"Plateforme d'innovation ouverte d'UniLaSalle : fablab, accompagnement de projets et prototypage pour l'agriculture.",w:"agrilab.unilasalle.fr"},
+   {n:"Incubateur AgroParisTech",a:"APT",p:"Île-de-France",t:"Incubateur de l'école, tourné vers les projets agri, agroalimentaires et environnementaux issus de la recherche et des étudiants.",w:"agroparistech.fr"},
+   {n:"Les Champs des Possibles",a:"CdP",p:"Île-de-France",t:"Coopérative d'activité et espace-test agricole : permet de tester un projet d'installation avant de se lancer.",w:"leschampsdespossibles.fr"},
+   {n:"Agropolis International",a:"AGP",h:"Montpellier",p:"Occitanie et international",t:"Association qui fédère recherche, enseignement et entreprises autour de l'agriculture et de l'alimentation, avec des dispositifs d'accompagnement.",w:"agropolis.fr"}]},
+  {n:"Pôles de compétitivité",s:"Pôles",items:[
+   {n:"Vegepolys Valley",a:"VV",h:"Angers",p:"Grand Ouest et national",t:"Pôle du végétal spécialisé : semences, horticulture, maraîchage, protection des cultures, numérique.",w:"vegepolys-valley.eu"},
+   {n:"Agri Sud-Ouest Innovation",a:"ASOI",p:"Occitanie, Nouvelle-Aquitaine",t:"Pôle de compétitivité agricole et agroalimentaire du Sud-Ouest, qui monte et labellise des projets collaboratifs.",w:"agrisudouest.com"},
+   {n:"Valorial",a:"VAL",h:"Rennes",p:"Grand Ouest",t:"Pôle de compétitivité de l'alimentation, de la production à la transformation.",w:"pole-valorial.fr"},
+   {n:"Vitagora",a:"VIT",h:"Dijon",p:"Bourgogne-Franche-Comté et national",t:"Pôle goût, nutrition et santé, actif sur les filières agricoles et les protéines végétales.",w:"vitagora.com"},
+   {n:"Bioeconomy For Change",a:"B4C",p:"Grand Est, Hauts-de-France",t:"Pôle de la bioéconomie : valorisation de la biomasse agricole, chimie biosourcée, bioénergies.",w:"bioeconomyforchange.eu"},
+   {n:"Qualimediterranée",a:"QM",h:"Montpellier",p:"Occitanie",t:"Pôle de l'agriculture et de l'agroalimentaire méditerranéens, avec un fort volet eau et climat.",w:""}]},
+  {n:"Réseaux & tiers-lieux",s:"Réseaux",items:[
+   {n:"La Ferme Digitale",a:"LFD",y:"2016",h:"Paris",p:"National",t:"Association de startups agritech qui promeut une agriculture innovante et accessible, et organise des événements grand public.",w:"lafermedigitale.fr"},
+   {n:"L'Atelier Paysan",a:"AtP",p:"National",t:"Coopérative qui diffuse en libre accès des plans de machines agricoles et forme à l'autoconstruction. Exemple direct d'innovation démocratisée.",w:"latelierpaysan.org"},
+   {n:"Réseau CIVAM",a:"CIV",p:"National",t:"Réseau de groupes d'agriculteurs qui expérimentent ensemble des pratiques plus autonomes et économes.",w:"civam.org"},
+   {n:"Terre de Liens",a:"TdL",p:"National",t:"Mouvement qui achète du foncier agricole grâce à l'épargne citoyenne pour faciliter l'installation.",w:"terredeliens.org"},
+   {n:"RENETA",a:"RNT",p:"National",t:"Réseau national des espaces-test agricoles, pour tester une activité en conditions réelles et en sécurité.",w:"reneta.fr"}]}]},
+ {k:"pub",n:"Acteurs publics",c:"#2b5c8a",doms:[
+  {n:"État & programmes",s:"État",items:[
+   {n:"Ministère de l'Agriculture et de la Souveraineté alimentaire",a:"MASA",h:"Paris",p:"National",t:"Définit la politique agricole, pilote l'enseignement agricole et plusieurs appels à projets d'innovation.",w:"agriculture.gouv.fr"},
+   {n:"France 2030",a:"F30",p:"National",t:"Plan d'investissement de l'État, avec un volet « troisième révolution agricole » : robotique, numérique, génétique, biosolutions.",w:"info.gouv.fr/france-2030"},
+   {n:"ADEME",a:"ADM",h:"Angers",p:"National",t:"Agence de la transition écologique : soutien aux projets de décarbonation, méthanisation, sobriété en agriculture.",w:"ademe.fr"},
+   {n:"Régions de France",a:"RdF",p:"Régional",t:"Les régions gèrent une partie des fonds européens agricoles (FEADER) et des aides à l'innovation et à l'installation.",w:"regions-france.org"}]},
+  {n:"Agences & opérateurs",s:"Agences",items:[
+   {n:"FranceAgriMer",a:"FAM",h:"Montreuil",p:"National",t:"Établissement des produits agricoles et de la mer : aides aux filières, études de marché, appels à projets.",w:"franceagrimer.fr"},
+   {n:"Agence Bio",a:"AB",p:"National",t:"Groupement d'intérêt public qui développe et promeut l'agriculture biologique, gère le Fonds Avenir Bio.",w:"agencebio.org"},
+   {n:"ANSES",a:"ANS",p:"National",t:"Évalue les risques sanitaires et délivre les autorisations de mise sur le marché des produits phytosanitaires et biocontrôle.",w:"anses.fr"},
+   {n:"INAO",a:"INAO",p:"National",t:"Institut des signes officiels de qualité et d'origine (AOP, IGP, Label rouge, bio).",w:"inao.gouv.fr"},
+   {n:"Agence nationale de la recherche",a:"ANR",p:"National",t:"Finance la recherche sur projets, dont les programmes sur l'agroécologie et l'agriculture numérique.",w:"anr.fr"}]},
+  {n:"Europe",s:"Europe",items:[
+   {n:"Commission européenne · DG AGRI",a:"DGA",h:"Bruxelles",p:"Union européenne",t:"Direction générale qui pilote la PAC, dont le volet innovation et les groupes opérationnels.",w:"agriculture.ec.europa.eu"},
+   {n:"Réseau PAC de l'UE (ex-PEI-AGRI)",a:"PEI",p:"Union européenne",t:"Partenariat européen pour l'innovation agricole : groupes opérationnels qui associent agriculteurs, chercheurs et conseillers.",w:"eu-cap-network.ec.europa.eu"},
+   {n:"EIT Food",a:"EIT",p:"Europe",t:"Communauté d'innovation européenne de l'alimentation : accélérateurs, financements et formations.",w:"eitfood.eu"},
+   {n:"Horizon Europe · Cluster 6",a:"HE6",p:"Europe",t:"Programme européen de recherche qui finance l'alimentation, la bioéconomie, l'agriculture et l'environnement.",w:"research-and-innovation.ec.europa.eu"}]}]},
+ {k:"rec",n:"Recherche & formation",c:"#6b4c9a",doms:[
+  {n:"Organismes de recherche",s:"Organismes",items:[
+   {n:"INRAE",y:"2020",h:"Paris",p:"National",t:"Institut national de recherche pour l'agriculture, l'alimentation et l'environnement, né de la fusion de l'INRA et d'Irstea.",w:"inrae.fr"},
+   {n:"CIRAD",y:"1984",h:"Montpellier",p:"International",t:"Organisme de recherche agronomique pour le développement des régions tropicales et méditerranéennes.",w:"cirad.fr"},
+   {n:"IRD",a:"IRD",h:"Marseille",p:"International",t:"Institut de recherche pour le développement, actif sur les systèmes agricoles et alimentaires des pays du Sud.",w:"ird.fr"},
+   {n:"Inria",a:"INR",p:"National",t:"Institut du numérique, présent sur l'agriculture numérique via des équipes communes avec INRAE.",w:"inria.fr"}]},
+  {n:"Instituts techniques agricoles",s:"Instituts tech.",items:[
+   {n:"ACTA",a:"ACTA",h:"Paris",p:"National",t:"Tête de réseau des instituts techniques agricoles, coordonne la recherche appliquée et les réseaux mixtes technologiques.",w:"acta.asso.fr"},
+   {n:"Arvalis",a:"ARV",p:"National",t:"Institut technique des grandes cultures (céréales, maïs, pomme de terre, fourrages), animateur des Digifermes.",w:"arvalis.fr"},
+   {n:"Idele",a:"IDL",h:"Paris",p:"National",t:"Institut de l'élevage pour les ruminants : génétique, conduite d'élevage, environnement, travail.",w:"idele.fr"},
+   {n:"IFV",a:"IFV",p:"National",t:"Institut français de la vigne et du vin : expérimentation viticole et œnologique.",w:"vignevin.com"},
+   {n:"Terres Inovia",a:"TI",p:"National",t:"Institut technique des oléagineux, protéagineux et chanvre.",w:"terresinovia.fr"},
+   {n:"CTIFL",a:"CTF",p:"National",t:"Centre technique des fruits et légumes, avec plusieurs stations d'expérimentation.",w:"ctifl.fr"},
+   {n:"ITAB",a:"ITAB",p:"National",t:"Institut technique de l'agriculture biologique.",w:"itab.asso.fr"},
+   {n:"ITAVI",a:"ITV",p:"National",t:"Institut technique de l'aviculture, de la cuniculture et de la pisciculture.",w:"itavi.asso.fr"},
+   {n:"IFIP",a:"IFIP",p:"National",t:"Institut de la filière porcine.",w:"ifip.asso.fr"}]},
+  {n:"Écoles & universités",s:"Écoles",items:[
+   {n:"AgroParisTech",a:"APT",h:"Palaiseau",p:"National",t:"Grande école d'ingénieurs du vivant et de l'environnement.",w:"agroparistech.fr"},
+   {n:"L'Institut Agro",a:"IA",p:"Montpellier, Rennes-Angers, Dijon",t:"Établissement d'enseignement supérieur agronomique sur trois campus.",w:"institut-agro.fr"},
+   {n:"UniLaSalle",a:"ULS",p:"Beauvais, Rouen, Rennes, Amiens",t:"École d'ingénieurs en agriculture, agroalimentaire et géosciences.",w:"unilasalle.fr"},
+   {n:"École d'ingénieurs de Purpan",a:"PUR",h:"Toulouse",p:"Occitanie",t:"École d'ingénieurs en agriculture, agroalimentaire et management.",w:"purpan.fr"},
+   {n:"ISARA",a:"ISA",h:"Lyon",p:"Auvergne-Rhône-Alpes",t:"École d'ingénieurs en agronomie, alimentation et environnement, pionnière sur l'agroécologie.",w:"isara.fr"},
+   {n:"VetAgro Sup",a:"VAS",p:"Clermont-Ferrand, Lyon",t:"Institut d'enseignement supérieur en agronomie, médecine vétérinaire et santé publique.",w:"vetagro-sup.fr"}]}]},
+ {k:"con",n:"Conseil & développement",c:"#a8741a",doms:[
+  {n:"Chambres d'agriculture",s:"Chambres",items:[
+   {n:"Chambres d'agriculture France",a:"CAF",h:"Paris",p:"National",t:"Tête de réseau des chambres d'agriculture départementales et régionales : conseil, installation, expérimentation.",w:"chambres-agriculture.fr"},
+   {n:"Chambres régionales d'agriculture",a:"CRA",p:"Régional",t:"Portent les programmes régionaux de développement agricole et les fermes de démonstration.",w:"chambres-agriculture.fr"}]},
+  {n:"Conseil & gestion",s:"Conseil",items:[
+   {n:"Cerfrance",a:"CER",p:"National",t:"Réseau associatif de conseil et d'expertise comptable pour les exploitations agricoles.",w:"cerfrance.fr"},
+   {n:"FNCUMA",a:"CUMA",p:"National",t:"Fédération des coopératives d'utilisation de matériel agricole : le partage d'équipements rend les machines innovantes accessibles aux petites fermes.",w:"cuma.fr"},
+   {n:"Trame",a:"TRM",p:"National",t:"Association de développement agricole qui anime des groupes d'agriculteurs et de salariés.",w:"trame.org"},
+   {n:"La Coopération Agricole",a:"LCA",h:"Paris",p:"National",t:"Organisation représentative des coopératives agricoles et agroalimentaires.",w:"lacooperationagricole.coop"}]},
+  {n:"Données & numérique",s:"Données",items:[
+   {n:"Agdatahub",a:"ADH",p:"National",t:"Plateforme d'échange de données agricoles avec gestion du consentement de l'agriculteur.",w:"agdatahub.eu"},
+   {n:"Charte Data-Agri",a:"DA",p:"National",t:"Label qui garantit aux agriculteurs la transparence sur l'usage de leurs données par les entreprises.",w:"data-agri.fr"},
+   {n:"#DigitAg",a:"DGT",h:"Montpellier",p:"National",t:"Institut de convergences en agriculture numérique : recherche, formation et lien avec les entreprises.",w:"hdigitag.fr"},
+   {n:"RMT NAExUS",a:"NAX",p:"National",t:"Réseau mixte technologique sur le numérique en agriculture, qui associe instituts techniques, chambres et recherche.",w:""}]}]},
+ {k:"fil",n:"Filières & industriels",c:"#8e4630",doms:[
+  {n:"Coopératives & groupes",s:"Coopératives",items:[
+   {n:"InVivo",a:"INV",h:"Paris",p:"National",t:"Union de coopératives agricoles, active dans l'agriculture, la distribution et le vin, avec un pôle innovation.",w:"invivo-group.com"},
+   {n:"Agrial",a:"AGR",h:"Caen",p:"Grand Ouest",t:"Groupe coopératif agricole et agroalimentaire du Grand Ouest.",w:"agrial.com"},
+   {n:"Vivescia",a:"VSC",h:"Reims",p:"Nord-Est",t:"Groupe coopératif céréalier, impliqué dans l'agriculture régénératrice et la bioéconomie.",w:"vivescia.com"},
+   {n:"Terrena",a:"TER",h:"Ancenis",p:"Grand Ouest",t:"Coopérative agricole de l'Ouest, avec un réseau de fermes pilotes.",w:"terrena.fr"},
+   {n:"Axéréal",a:"AXE",h:"Olivet",p:"Centre et national",t:"Coopérative céréalière et groupe de transformation (malterie, meunerie).",w:"axereal.com"},
+   {n:"Avril",a:"AVR",h:"Paris",p:"National et international",t:"Groupe agro-industriel des huiles et protéines végétales, avec un bras financier (Sofiprotéol).",w:"groupeavril.com"}]},
+  {n:"Agroéquipement",s:"Agroéquip.",items:[
+   {n:"Axema",a:"AXM",p:"National",t:"Union des industriels de l'agroéquipement, coorganisatrice du SIMA.",w:"axema.fr"},
+   {n:"RobAgri",a:"RBA",p:"National",t:"Association qui fédère industriels, startups et recherche autour de la robotique agricole.",w:"robagri.fr"},
+   {n:"Kuhn",a:"KHN",h:"Saverne",p:"International",t:"Constructeur français de machines agricoles, engagé dans le numérique et l'automatisation.",w:"kuhn.com"}]},
+  {n:"Organisations professionnelles",s:"Profession",items:[
+   {n:"FNSEA",a:"FNS",p:"National",t:"Syndicat agricole.",w:"fnsea.fr"},
+   {n:"Jeunes Agriculteurs",a:"JA",p:"National",t:"Syndicat des agriculteurs de moins de 35 ans, très impliqué dans l'installation.",w:"jeunes-agriculteurs.fr"},
+   {n:"Confédération paysanne",a:"CP",p:"National",t:"Syndicat agricole.",w:"confederationpaysanne.fr"},
+   {n:"Coordination rurale",a:"CR",p:"National",t:"Syndicat agricole.",w:"coordinationrurale.fr"},
+   {n:"Intercéréales",a:"ICR",p:"National",t:"Interprofession des céréales.",w:"intercereales.com"},
+   {n:"CNIEL",a:"CNL",p:"National",t:"Interprofession laitière.",w:"filiere-laitiere.fr"},
+   {n:"Interbev",a:"IBV",p:"National",t:"Interprofession du bétail et des viandes.",w:"interbev.fr"}]}]},
+ {k:"fin",n:"Investisseurs & financeurs",c:"#1d7676",doms:[
+  {n:"Capital-investissement",s:"Fonds",items:[
+   {n:"Demeter (Demea Invest)",a:"DMT",h:"Paris",p:"Europe",t:"Société de gestion spécialisée dans la transition écologique, dont l'agritech et l'agroalimentaire.",w:"demea-si.com"},
+   {n:"Unigrains",a:"UNG",h:"Paris",p:"National",t:"Fonds d'investissement des filières céréales et agroalimentaire.",w:"unigrains.fr"},
+   {n:"Sofiprotéol",a:"SFP",p:"National",t:"Société de financement et de développement du groupe Avril, au service des filières agricoles.",w:"sofiproteol.com"},
+   {n:"Capagro",a:"CPG",p:"Europe",t:"Fonds de capital-risque dédié aux innovations agricoles et alimentaires.",w:"capagro.fr"},
+   {n:"Astanor",a:"AST",p:"Europe",t:"Fonds de capital-risque européen centré sur l'agriculture et l'alimentation à impact.",w:"astanor.com"}]},
+  {n:"Banques & financement public",s:"Banques",items:[
+   {n:"Bpifrance",a:"BPI",p:"National",t:"Banque publique d'investissement : prêts, subventions innovation, fonds propres et opérateur de France 2030.",w:"bpifrance.fr"},
+   {n:"Crédit Agricole",a:"CA",p:"National",t:"Premier financeur de l'agriculture française, porteur du réseau Village by CA.",w:"credit-agricole.fr"},
+   {n:"Fonds Avenir Bio",a:"FAB",p:"National",t:"Fonds géré par l'Agence Bio pour structurer les filières biologiques.",w:"agencebio.org"}]},
+  {n:"Financement participatif & citoyen",s:"Participatif",items:[
+   {n:"Miimosa",a:"MIM",y:"2015",p:"National",t:"Plateforme de financement participatif (dons et prêts) dédiée à l'agriculture et à l'alimentation.",w:"miimosa.com"},
+   {n:"Fermes en vie (Feve)",a:"FEV",p:"National",t:"Foncière citoyenne qui achète des fermes pour y installer des agriculteurs en agroécologie.",w:"feve.co"},
+   {n:"Terre de Liens · Foncière",a:"TdLF",p:"National",t:"Outil d'épargne solidaire du mouvement Terre de Liens pour acquérir des terres.",w:"terredeliens.org"}]}]},
+ {k:"med",n:"Médias & événements",c:"#a33a5a",doms:[
+  {n:"Presse & médias",s:"Presse",items:[
+   {n:"La France Agricole",a:"LFA",p:"National",t:"Hebdomadaire professionnel de référence pour les agriculteurs.",w:"lafranceagricole.fr"},
+   {n:"Terre-net",a:"TN",p:"National",t:"Média agricole en ligne : actualité, marchés, machinisme.",w:"terre-net.fr"},
+   {n:"Réussir",a:"RSR",p:"National",t:"Groupe de presse agricole spécialisé par filière.",w:"reussir.fr"},
+   {n:"Agra Presse",a:"AGP",p:"National",t:"Agence de presse spécialisée dans l'agriculture et l'agroalimentaire.",w:"agra.fr"},
+   {n:"WikiAgri",a:"WA",p:"National",t:"Média agricole indépendant en ligne.",w:"wikiagri.fr"}]},
+  {n:"Salons",s:"Salons",items:[
+   {n:"Salon International de l'Agriculture",a:"SIA",h:"Paris",p:"National",t:"Grand rendez-vous annuel entre agriculteurs et grand public.",w:"salon-agriculture.com"},
+   {n:"SIMA",a:"SIMA",h:"Villepinte",p:"International",t:"Salon international des solutions et technologies pour l'agriculture.",w:"simaonline.com"},
+   {n:"SPACE",a:"SPC",h:"Rennes",p:"International",t:"Salon international des productions animales.",w:"space.fr"},
+   {n:"Sommet de l'Élevage",a:"SDE",h:"Cournon-d'Auvergne",p:"International",t:"Salon européen des professionnels de l'élevage.",w:"sommet-elevage.fr"},
+   {n:"Innov-Agri",a:"IAG",p:"National",t:"Salon en plein champ des grandes cultures et du machinisme.",w:"innovagri.com"},
+   {n:"FIRA",a:"FIRA",p:"International",t:"Forum international de la robotique agricole.",w:"fira-agtech.com"}]},
+  {n:"Concours & prix",s:"Concours",items:[
+   {n:"Concours général agricole",a:"CGA",h:"Paris",p:"National",t:"Concours de produits et d'animaux organisé pendant le Salon de l'Agriculture.",w:"concours-general-agricole.fr"},
+   {n:"SIMA Innovation Awards",a:"SIA+",p:"International",t:"Prix qui distinguent les innovations en agroéquipement présentées au SIMA.",w:"simaonline.com"},
+   {n:"Innov'Space",a:"IS",p:"International",t:"Prix de l'innovation du SPACE pour l'élevage.",w:"space.fr"}]}]}
+];
+
+const NS="http://www.w3.org/2000/svg", C=500;
+const svg=document.getElementById('wheel');
+const el=(t,a={},p=svg)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+const pol=(r,a)=>[C+r*Math.sin(a),C-r*Math.cos(a)];
+const arc=(r0,r1,a0,a1)=>{const L=a1-a0>Math.PI?1:0,[x0,y0]=pol(r1,a0),[x1,y1]=pol(r1,a1),[x2,y2]=pol(r0,a1),[x3,y3]=pol(r0,a0);
+ return `M${x0},${y0}A${r1},${r1} 0 ${L} 1 ${x1},${y1}L${x2},${y2}A${r0},${r0} 0 ${L} 0 ${x3},${y3}Z`};
+const ini=it=>it.a||(/^[A-Z0-9]{2,5}$/.test(it.n)?it.n:it.n.replace(/[’']/g," ").split(/[\s·\-]+/).filter(w=>w.length>2&&!/^(des|les|de|la|le|du|et|pour)$/i.test(w)).map(w=>w[0].toUpperCase()).join('').slice(0,3));
+
+// counts and stats
+let all=[];SECTORS.forEach(s=>s.doms.forEach(d=>d.items.forEach(it=>{it.sec=s;it.dom=d;all.push(it)})));
+const nDom=SECTORS.reduce((a,s)=>a+s.doms.length,0);
+document.getElementById('stats').innerHTML=[[all.length,"structures référencées"],[SECTORS.length,"secteurs"],[nDom,"domaines"]]
+ .map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+
+// geometry: domain span proportional to max(count,3)
+const R={core:72,dom0:82,dom1:158,chip0:184,chipStep:40,sec0:418,sec1:470};
+const weight=d=>Math.max(d.items.length,3)+0.6, total=SECTORS.reduce((a,s)=>a+s.doms.reduce((b,d)=>b+weight(d),0),0);
+const GAP=0.012;let ang=0;
+const defs=el('defs');
+SECTORS.forEach((s,si)=>{
+ const s0=ang;
+ s.doms.forEach(d=>{const span=weight(d)/total*2*Math.PI;d.a0=ang;d.a1=ang+span;ang+=span});
+ s.a0=s0;s.a1=ang;
+});
+// background rings
+el('circle',{cx:C,cy:C,r:R.sec0-4,fill:'var(--ring)'});
+SECTORS.forEach((s,si)=>{
+ // sector band
+ el('path',{d:arc(R.sec0,R.sec1,s.a0+GAP,s.a1-GAP),fill:s.c});
+ const mid=(s.a0+s.a1)/2, rr=(R.sec0+R.sec1)/2-5, flip=mid>Math.PI/2&&mid<3*Math.PI/2;
+ const a0=s.a0+GAP,a1=s.a1-GAP;let p0=pol(rr,flip?a1:a0),p1=pol(rr,flip?a0:a1);
+ const rr2=flip?rr+10:rr;p0=pol(rr2,flip?a1:a0);p1=pol(rr2,flip?a0:a1);
+ el('path',{id:'sp'+si,d:`M${p0}A${rr2},${rr2} 0 ${a1-a0>Math.PI?1:0} ${flip?0:1} ${p1}`,fill:'none'},defs);
+ const tx=el('text',{fill:'#fff','font-size':15,'font-weight':700,'letter-spacing':'1.5'});
+ const tp=el('textPath',{href:'#sp'+si,startOffset:'50%','text-anchor':'middle'},tx);tp.textContent=s.n.toUpperCase();
+ s.doms.forEach((d,di)=>{
+  el('path',{d:arc(R.dom0,R.dom1,d.a0+GAP/2,d.a1-GAP/2),fill:s.c,opacity:.85});
+  // radial label
+  const m=(d.a0+d.a1)/2, deg=m*180/Math.PI, right=m<Math.PI;
+  const [lx,ly]=pol((R.dom0+R.dom1)/2,m);
+  const t=el('text',{x:lx,y:ly,fill:'#fff','font-size':10.5,'font-weight':600,'text-anchor':'middle','dominant-baseline':'central',
+   transform:`rotate(${right?deg-90:deg+90} ${lx} ${ly})`});t.textContent=d.s;
+  // separator wedge lines in chip area
+  const [x0,y0]=pol(R.dom1+4,d.a0),[x1,y1]=pol(R.sec0-4,d.a0);
+  el('line',{x1:x0,y1:y0,x2:x1,y2:y1,stroke:di===0?'var(--surface)':'var(--line)','stroke-width':di===0?4:1});
+  // chips
+  let i=0,row=0;
+  while(i<d.items.length){
+   const r=R.chip0+row*R.chipStep, usable=(d.a1-d.a0)-0.03, cap=Math.max(1,Math.floor(usable*r/60));
+   const n=Math.min(cap,d.items.length-i);
+   for(let k=0;k<n;k++){
+    const a=d.a0+0.015+usable*(k+0.5)/n, it=d.items[i+k], [x,y]=pol(r,a);
+    const g=el('g',{class:'chip',tabindex:0,role:'button','aria-label':it.n});
+    el('rect',{x:x-28,y:y-17,width:56,height:34,rx:6,fill:s.c},g);
+    const lab=ini(it);const tt=el('text',{x,y,'text-anchor':'middle','dominant-baseline':'central','font-size':lab.length>3?8.5:10.5},g);tt.textContent=lab;
+    el('title',{},g).textContent=it.n;
+    it.g=g;it.cx=x;it.cy=y;g.addEventListener('click',()=>show(it));
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(it)}});
+   }
+   i+=n;row++;
+  }
+ });
+});
+// core
+el('circle',{cx:C,cy:C,r:R.core,fill:'var(--band)'});
+const c1=el('text',{x:C,y:C-6,'text-anchor':'middle',fill:'var(--band-fg)','font-size':17,'font-weight':700,'font-family':'Bricolage Grotesque, sans-serif'});c1.textContent='AgriTrend';
+const c2=el('text',{x:C,y:C+16,'text-anchor':'middle',fill:'var(--accent)','font-size':10,'letter-spacing':'1.5'});c2.textContent='INNOVATION';
+
+// logos (fichier séparé, chargé si présent)
+fetch('/cartographie-logos.json').then(r=>r.ok?r.json():{}).then(L=>{
+ all.forEach(it=>{if(!it.w)return;const u=L[it.w.split('/')[0]];if(!u)return;
+  const v=typeof u==='string'?{u}:u;const c=it.g.querySelector('rect');c.setAttribute('fill',v.bg||'#fff');c.setAttribute('stroke',it.sec.c);c.setAttribute('stroke-width',2);
+  it.g.querySelector('text').remove();
+  el('image',{href:v.u,x:it.cx-25,y:it.cy-14,width:50,height:28,preserveAspectRatio:'xMidYMid meet'},it.g);});
+}).catch(()=>{});
+
+// sector panel
+const secBox=document.getElementById('sectors');let openSec=null;
+function renderSectors(){
+ secBox.innerHTML='';
+ SECTORS.forEach(s=>{
+  const n=s.doms.reduce((a,d)=>a+d.items.length,0);
+  const b=document.createElement('button');b.className='sec';b.setAttribute('aria-pressed',openSec===s);
+  b.innerHTML=`<i style="background:${s.c}"></i><span>${s.n}</span><b>${n}</b>`;
+  b.onclick=()=>{openSec=openSec===s?null:s;renderSectors();highlight()};
+  secBox.appendChild(b);
+  if(openSec===s){const dd=document.createElement('div');dd.className='doms';
+   dd.innerHTML=s.doms.map(d=>`<span class="dom">${d.n} · ${d.items.length}</span>`).join('');secBox.appendChild(dd)}
+ });
+}
+renderSectors();
+const q=document.getElementById('q');
+function norm(x){return x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}
+function highlight(){
+ const v=norm(q.value.trim());
+ all.forEach(it=>{const hit=(!v||norm(it.n+' '+(it.a||'')+' '+it.t).includes(v))&&(!openSec||it.sec===openSec);it.g.classList.toggle('dim',!hit)});
+}
+q.addEventListener('input',()=>{highlight();const v=norm(q.value.trim());if(v){const m=all.filter(it=>norm(it.n).includes(v));if(m.length===1)show(m[0])}});
+
+const fiche=document.getElementById('fiche');let cur=null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function show(it){
+ if(cur)cur.g.classList.remove('sel');cur=it;it.g.classList.add('sel');
+ fiche.innerHTML=`<h2>Fiche sélectionnée</h2><h3>${esc(it.n)}</h3>
+ <div class="ftags"><span class="ftag" style="background:${it.sec.c}">${esc(it.dom.n)}</span><span class="ftag verify">Fiche à vérifier</span></div>
+ <div class="meta"><div><small>Création</small>${esc(it.y||'À compléter')}</div><div><small>Siège</small>${esc(it.h||'À compléter')}</div><div><small>Périmètre</small>${esc(it.p||'À compléter')}</div></div>
+ <h4>Description</h4><p>${esc(it.t)}</p>
+ <h4>Secteur</h4><p>${esc(it.sec.n)}</p>
+ ${it.w?`<h4>Site internet</h4><p><a href="https://${esc(it.w)}" target="_blank" rel="noopener nofollow">${esc(it.w)} →</a></p>`:''}`;
+}
+</script></body></html>
